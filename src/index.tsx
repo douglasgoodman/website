@@ -3,10 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { Router } from '@reach/router';
+import About from './About';
+import User from './User';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <App path='/'>
+        <About path='about' />
+        <User path="user/:userId" />
+      </App>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
