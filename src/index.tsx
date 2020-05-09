@@ -1,22 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-import { Router } from '@reach/router';
-import About from './About';
-import User from './User';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import * as serviceWorker from "./serviceWorker";
+import { Router } from "@reach/router";
+import About from "./About";
+import User from "./User";
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <App path='/'>
-        <About path='about' />
+      <App path="/">
+        <About path="about" />
         <User path="user/:userId" />
       </App>
     </Router>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change
