@@ -6,6 +6,10 @@
   align-items: center;
 }
 
+.Snake:focus {
+  outline: 0;
+}
+
 .Snake-grid {
   background-color: #8abe7b;
   border: solid 1px #8abe7b;
@@ -51,11 +55,13 @@
 }
 
 .Snake-button {
+  min-width: 200px;
   font-family: "Courier New", Courier, monospace;
   background-color: transparent;
   color: #8abe7b;
   padding: 10px 20px;
   border: solid 1px #8abe7b;
+  margin-bottom: 5px;
 }
 
 .Snake-button:hover {

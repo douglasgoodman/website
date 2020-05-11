@@ -1,6 +1,7 @@
 export class Timer {
   private isRunning: boolean = false;
   private elapsed: number = 0;
+  private intervalId: NodeJS.Timeout | undefined = undefined;
 
   constructor(
     private interval: number,
@@ -10,7 +11,7 @@ export class Timer {
   public start() {
     this.elapsed = 0;
     this.isRunning = true;
-    setInterval(this.tick, this.interval);
+    this.intervalId = setInterval(this.tick, this.interval);
   }
 
   private tick = () => {
@@ -22,6 +23,10 @@ export class Timer {
 
   public stop() {
     this.isRunning = false;
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = undefined;
+    }
   }
 
   public togglePause() {

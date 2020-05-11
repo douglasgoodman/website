@@ -1,8 +1,11 @@
 export class Canvas {
-  private readonly width: number;
-  private readonly height: number;
+  public readonly width: number;
+  public readonly height: number;
 
-  constructor(private context: CanvasRenderingContext2D) {
+  constructor(
+    private context: CanvasRenderingContext2D,
+    private snakeSize: number
+  ) {
     this.width = context.canvas.width;
     this.height = context.canvas.height;
   }
@@ -18,5 +21,21 @@ export class Canvas {
     this.context.beginPath();
     this.context.fillStyle = color;
     this.context.fillRect(x, y, size, size);
+  }
+
+  public get top(): number {
+    return this.snakeSize;
+  }
+
+  public get bottom(): number {
+    return this.height - this.snakeSize;
+  }
+
+  public get left(): number {
+    return this.snakeSize;
+  }
+
+  public get right(): number {
+    return this.width - this.snakeSize;
   }
 }

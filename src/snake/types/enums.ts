@@ -5,3 +5,10 @@ export enum Direction {
   Right,
   None,
 }
+
+export enum DirectionKey {
+  Up = "ArrowUp",
+  Down = "ArrowDown",
+  Left = "ArrowLeft",
+  Right = "ArrowRight",
+}

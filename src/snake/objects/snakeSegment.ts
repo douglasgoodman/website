@@ -3,20 +3,23 @@ import { Position } from "../types/position";
 import { Canvas } from "../canvas";
 
 export class SnakeSegment implements IDrawable {
-  private static readonly segmentSize: number = 5;
+  private static readonly colorAlive: string = "#aaaaaa";
+  private static readonly colorDead: string = "#ff0000";
 
-  public position: Position;
+  protected isAlive: boolean = true;
 
-  constructor(private context: Canvas, position: Position) {
-    this.position = position;
-  }
+  constructor(
+    private context: Canvas,
+    protected snakeSize: number,
+    public position: Position
+  ) {}
 
   public draw(): void {
     this.context.drawSquare(
       this.position.X,
       this.position.Y,
-      SnakeSegment.segmentSize,
-      "#aaaaaa"
+      this.snakeSize,
+      this.isAlive ? SnakeSegment.colorAlive : SnakeSegment.colorDead
     );
   }
 }
