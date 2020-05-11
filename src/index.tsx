@@ -4,14 +4,16 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Router } from "@reach/router";
-import About from "./About";
-import User from "./User";
+import { About } from "./about";
+import { User } from "./user";
+import { Snake } from "./snake";
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <App path="/">
         <About path="about" />
+        <Snake path="snake" />
         <User path="user/:userId" />
       </App>
     </Router>

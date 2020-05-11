@@ -1,7 +1,7 @@
 import * as React from "react";
 import { RouteComponentProps } from "@reach/router";
 
-const User = (
+export const User = (
   props: RouteComponentProps & { children?: React.ReactNode; userId?: string }
 ) => {
   return (
@@ -11,5 +11,3 @@ const User = (
     </>
   );
 };
-
-export default User;
