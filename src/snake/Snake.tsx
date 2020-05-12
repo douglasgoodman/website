@@ -102,7 +102,7 @@ export const Snake = (props: RouteComponentProps) => {
           <p>High Score: {highScore}</p>
         </div>
         <footer className="Snake-footer">
-          <p>This is the snake game!</p>
+          <p>Control the snake to eat the fruit!</p>
         </footer>
       </div>
     </div>

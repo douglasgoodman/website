@@ -29,7 +29,8 @@ export class Timer {
     }
   }
 
-  public togglePause() {
+  public togglePause(): boolean {
     this.isRunning = !this.isRunning;
+    return !this.isRunning;
   }
 }

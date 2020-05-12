@@ -23,26 +23,38 @@ export class Snake extends SnakeSegment {
   }
 
   private move(direction: Direction) {
+    let x = this.position.X;
+    let y = this.position.Y;
+
     if (direction === Direction.Up) {
-      this.position.Y -= this.snakeSize;
+      y -= this.snakeSize;
     } else if (direction === Direction.Down) {
-      this.position.Y += this.snakeSize;
+      y += this.snakeSize;
     } else if (direction === Direction.Left) {
-      this.position.X -= this.snakeSize;
+      x -= this.snakeSize;
     } else {
-      this.position.X += this.snakeSize;
+      x += this.snakeSize;
     }
+
+    this.position = new Position(x, y);
   }
 
   private updateSegments() {
     for (var i = this.length; i >= 1; i--) {
-      this.segments[i].position = this.segments[i - 1].position.copy();
+      this.segments[i].position = this.segments[i - 1].position;
     }
   }
 
   public update(direction: Direction) {
     this.updateSegments();
     this.move(direction);
+    //this.drawSegments();
+  }
+
+  public animate(time: number, snakeSpeed: number) {
+    const delta = Math.min((Date.now() - this.lastMoveTime) / snakeSpeed, 1);
+    this.segments.forEach((s) => s.updateAnimationPosition(delta));
+
     this.drawSegments();
   }
 
@@ -57,10 +69,10 @@ export class Snake extends SnakeSegment {
 
   public hasBorderCollision(): boolean {
     return (
-      this.position.X < this.canvas.left ||
-      this.position.X > this.canvas.right ||
-      this.position.Y < this.canvas.top ||
-      this.position.Y > this.canvas.bottom
+      this.position.X < 0 ||
+      this.position.X > this.canvas.width ||
+      this.position.Y < 0 ||
+      this.position.Y > this.canvas.height
     );
   }
 
