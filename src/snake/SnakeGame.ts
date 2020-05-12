@@ -3,19 +3,22 @@ import { Timer } from "./types/timer";
 import { Snake } from "./objects/snake";
 import { Direction, DirectionKey } from "./types/enums";
 import { Position } from "./types/position";
+import { Fruit } from "./objects/fruit";
 
 export class SnakeGame {
   private score: number = 0;
   private canvas: Canvas;
   private timer: Timer;
   private snake: Snake;
+  private fruit: Fruit;
   private direction: Direction = Direction.Right;
   private elapsedSeconds: number = 0;
+  private isRunning: boolean = false;
 
   constructor(
     context: CanvasRenderingContext2D,
     private snakeSize: number,
-    private snakeSpeed: number,
+    snakeSpeed: number,
     private dataCallback: (
       score: number,
       elapsedSeconds: number,
@@ -25,19 +28,23 @@ export class SnakeGame {
     this.canvas = new Canvas(context, snakeSize);
     this.timer = new Timer(snakeSpeed, this.tick);
     this.snake = new Snake(this.canvas, this.snakeSize, new Position(200, 200));
+    this.fruit = new Fruit(this.canvas, this.snakeSize);
   }
 
   public start() {
     this.canvas.fill("#000000");
     this.snake = new Snake(this.canvas, this.snakeSize, new Position(200, 200));
+    this.fruit = new Fruit(this.canvas, this.snakeSize);
     this.direction = Direction.Right;
     this.score = 0;
+    this.isRunning = true;
     this.timer.start();
   }
 
   public stop() {
+    this.isRunning = false;
     this.timer.stop();
-    // kill snake object
+    // kill snake object?
   }
 
   public pause() {
@@ -57,15 +64,16 @@ export class SnakeGame {
   }
 
   private checkCollisions() {
-    if (
-      this.snake.position.X < this.canvas.left ||
-      this.snake.position.X >= this.canvas.right ||
-      this.snake.position.Y < this.canvas.top ||
-      this.snake.position.Y >= this.canvas.bottom
-    ) {
-      this.snake.die();
+    if (this.snake.hasBorderCollision() || this.snake.hasSelfCollision()) {
+      this.snake.kill();
       this.stop();
-      this.dataCallback(this.score, this.elapsedSeconds, false);
+      return;
+    }
+
+    if (this.snake.position.equals(this.fruit.position)) {
+      this.score++;
+      this.fruit = new Fruit(this.canvas, this.snakeSize);
+      this.snake.lengthen();
     }
   }
 
@@ -74,7 +82,11 @@ export class SnakeGame {
     this.canvas.fill("#000000");
     this.snake.update(this.direction);
     this.checkCollisions();
-    this.score++;
-    this.dataCallback(this.score, this.elapsedSeconds, true);
+    this.fruit.draw();
+    this.callback();
   };
+
+  private callback() {
+    this.dataCallback(this.score, this.elapsedSeconds, this.isRunning);
+  }
 }

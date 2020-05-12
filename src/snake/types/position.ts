@@ -4,4 +4,8 @@ export class Position {
   public copy(): Position {
     return new Position(this.X, this.Y);
   }
+
+  public equals(other: Position): boolean {
+    return this.X === other.X && this.Y === other.Y;
+  }
 }

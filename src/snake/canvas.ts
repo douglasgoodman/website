@@ -23,19 +23,26 @@ export class Canvas {
     this.context.fillRect(x, y, size, size);
   }
 
+  public drawCircle(x: number, y: number, size: number, color: string) {
+    this.context.beginPath();
+    this.context.arc(x, y, size, 0, 2 * Math.PI, false);
+    this.context.fillStyle = color;
+    this.context.fill();
+  }
+
   public get top(): number {
-    return this.snakeSize;
+    return 0;
   }
 
   public get bottom(): number {
-    return this.height - this.snakeSize;
+    return this.height;
   }
 
   public get left(): number {
-    return this.snakeSize;
+    return 0;
   }
 
   public get right(): number {
-    return this.width - this.snakeSize;
+    return this.width;
   }
 }

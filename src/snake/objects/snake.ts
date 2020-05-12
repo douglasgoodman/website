@@ -4,10 +4,10 @@ import { Direction } from "../types/enums";
 import { SnakeSegment } from "./snakeSegment";
 
 export class Snake extends SnakeSegment {
-  private length: number = 10;
+  private length: number = 5;
   private segments: SnakeSegment[] = [];
 
-  constructor(private canvas: Canvas, snakeSize: number, position: Position) {
+  constructor(canvas: Canvas, snakeSize: number, position: Position) {
     super(canvas, snakeSize, position);
 
     this.segments.push(this);
@@ -35,8 +35,7 @@ export class Snake extends SnakeSegment {
   }
 
   private updateSegments() {
-    console.log(this.segments);
-    for (var i = 1; i <= this.length; i++) {
+    for (var i = this.length; i >= 1; i--) {
       this.segments[i].position = this.segments[i - 1].position.copy();
     }
   }
@@ -44,11 +43,45 @@ export class Snake extends SnakeSegment {
   public update(direction: Direction) {
     this.updateSegments();
     this.move(direction);
+    this.drawSegments();
+  }
+
+  private drawSegments() {
     this.segments.forEach((s) => s.draw());
   }
 
-  public die() {
-    this.isAlive = false;
-    this.draw();
+  public kill() {
+    this.segments.forEach((s) => s.die());
+    this.drawSegments();
+  }
+
+  public hasBorderCollision(): boolean {
+    return (
+      this.position.X < this.canvas.left ||
+      this.position.X > this.canvas.right ||
+      this.position.Y < this.canvas.top ||
+      this.position.Y > this.canvas.bottom
+    );
+  }
+
+  public hasSelfCollision(): boolean {
+    let collision = false;
+    this.segments.forEach((s) => {
+      if (s !== this && this.position.equals(s.position)) {
+        collision = true;
+      }
+    });
+    return collision;
+  }
+
+  public lengthen() {
+    this.segments.push(
+      new SnakeSegment(
+        this.canvas,
+        this.snakeSize,
+        this.segments[this.length].position.copy()
+      )
+    );
+    this.length++;
   }
 }

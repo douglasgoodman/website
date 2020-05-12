@@ -28,7 +28,7 @@ export const Snake = (props: RouteComponentProps) => {
     setIsRunning(true);
     setIsPaused(false);
 
-    var s = snakeGame ?? new SnakeGame(context, 10, 50, update);
+    var s = snakeGame ?? new SnakeGame(context, 10, 100, update);
     setSnakeGame(s);
     s.start();
   };
