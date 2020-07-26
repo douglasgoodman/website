@@ -68,7 +68,7 @@ export const Snake = (props: RouteComponentProps) => {
     <div className="Snake" onKeyUp={setLastKey} tabIndex={-1}>
       <div className="Snake-grid">
         <header className="Snake-header">
-          <h3>Snake Game</h3>
+          <h3>Space Snake Game</h3>
         </header>
         <div className="Snake-main">
           <canvas
@@ -102,7 +102,7 @@ export const Snake = (props: RouteComponentProps) => {
           <p>High Score: {highScore}</p>
         </div>
         <footer className="Snake-footer">
-          <p>Control the snake to eat the fruit!</p>
+          <p>Control the space snake to eat the space fruit!</p>
         </footer>
       </div>
     </div>

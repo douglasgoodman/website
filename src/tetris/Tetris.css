@@ -1,0 +1,37 @@
+.Tetris {
+  margin: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Tetris:focus {
+  outline: 0;
+}
+
+.Tetris-grid {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  column-gap: 1px;
+  row-gap: 1px;
+}
+
+.Tetris-header {
+  padding: 10px;
+  grid-area: header;
+}
+
+.Tetris-main {
+  grid-area: main;
+}
+
+.Tetris-footer {
+  padding: 10px;
+  grid-area: footer;
+}

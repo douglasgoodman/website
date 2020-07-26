@@ -14,6 +14,9 @@ const App = (props: RouteComponentProps & { children?: React.ReactNode }) => {
           <Link className="App-link" to="snake">
             Snake
           </Link>
+          <Link className="App-link" to="tetris">
+            Tetris
+          </Link>
           <Link className="App-link" to="about">
             About
           </Link>
@@ -24,7 +27,7 @@ const App = (props: RouteComponentProps & { children?: React.ReactNode }) => {
       </header>
       <div className="App-content">{props.children}</div>
       <footer className="App-footer">
-        <p>Copyright 2020 Doug</p>
+        <p>Copyright 2020 Douglas Goodman</p>
       </footer>
     </div>
   );

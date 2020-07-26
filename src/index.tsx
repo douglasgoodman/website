@@ -7,6 +7,7 @@ import { Router } from "@reach/router";
 import { About } from "./about";
 import { User } from "./user";
 import { Snake } from "./snake";
+import { Tetris } from "./tetris";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,6 +15,7 @@ ReactDOM.render(
       <App path="/">
         <About path="about" />
         <Snake path="snake" />
+        <Tetris path="tetris" />
         <User path="user/:userId" />
       </App>
     </Router>
