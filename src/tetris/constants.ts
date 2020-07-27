@@ -1,3 +1,5 @@
+export const GameSpeed = 500;
+
 export const BlockSize = 20;
 export const BlockBevelWidth = 4;
 

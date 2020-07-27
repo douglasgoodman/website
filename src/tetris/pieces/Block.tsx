@@ -60,7 +60,7 @@ export const Block = (props: BlockProps) => {
           ...topLeft,
         ]}
         closed
-        fill={ColorPalettes[props.color].light}
+        fill={props.highlight ? "#ffffff" : ColorPalettes[props.color].light}
       />
       <Line
         points={[
@@ -71,7 +71,7 @@ export const Block = (props: BlockProps) => {
           ...topLeft,
         ]}
         closed
-        fill={ColorPalettes[props.color].medium}
+        fill={props.highlight ? "#ffffff" : ColorPalettes[props.color].medium}
       />
       <Line
         points={[
@@ -82,7 +82,7 @@ export const Block = (props: BlockProps) => {
           ...topRight,
         ]}
         closed
-        fill={ColorPalettes[props.color].medium}
+        fill={props.highlight ? "#ffffff" : ColorPalettes[props.color].medium}
       />
       <Line
         points={[
@@ -93,7 +93,7 @@ export const Block = (props: BlockProps) => {
           ...bottomLeft,
         ]}
         closed
-        fill={ColorPalettes[props.color].dark}
+        fill={props.highlight ? "#ffffff" : ColorPalettes[props.color].dark}
       />
       <Line
         points={[

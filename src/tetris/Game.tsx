@@ -7,6 +7,7 @@ import {
   StageHeight,
   FieldWidthBlocks,
   FieldHeightBlocks,
+  GameSpeed,
 } from "./constants";
 import { Outline } from "./Outline";
 import { Next } from "./Next";
@@ -39,8 +40,14 @@ function generateEmptyField(): number[][] {
   return field;
 }
 
+function getRandomPiece(): Piece {
+  return Math.floor(Math.random() * Math.floor(7));
+}
+
 export const Game = () => {
   const [isStarted, setIsStarted] = React.useState(false);
+  const [timerDelay, setTimerDelay] = React.useState(GameSpeed);
+  const [isTimerRunning, setIsTimerRunning] = React.useState(false);
   const [next, setNext] = React.useState(getRandomPiece());
   const [score, setScore] = React.useState(0);
   const [lines, setLines] = React.useState(0);
@@ -53,7 +60,9 @@ export const Game = () => {
   const [currentField, setCurrentField] = React.useState<number[][]>([]);
   const [currentLines, setCurrentLines] = React.useState<number[]>([]);
   const [isClearing, setIsClearing] = React.useState(false);
-  const [gameOver, setGameOver] = React.useState(false);
+  const [clearFlashCount, setClearFlashCount] = React.useState(0);
+  const [isGameOver, setIsGameOver] = React.useState(false);
+  const [gameOverLine, setGameOverLine] = React.useState(0);
 
   const isCollision = React.useCallback(
     (props: PieceProps): boolean => {
@@ -76,34 +85,28 @@ export const Game = () => {
 
   const moveLeft = React.useCallback(() => {
     const { x } = currentPiece;
+    const newPiece = { ...currentPiece, x: x - 1 };
 
-    if (!isCollision({ ...currentPiece, x: x - 1 })) {
-      setCurrentPiece({
-        ...currentPiece,
-        x: x - 1,
-      });
+    if (!isCollision(newPiece)) {
+      setCurrentPiece(newPiece);
     }
   }, [currentPiece, isCollision]);
 
   const moveRight = React.useCallback(() => {
     const { x } = currentPiece;
+    const newPiece = { ...currentPiece, x: x + 1 };
 
-    if (!isCollision({ ...currentPiece, x: x + 1 })) {
-      setCurrentPiece({
-        ...currentPiece,
-        x: x + 1,
-      });
+    if (!isCollision(newPiece)) {
+      setCurrentPiece(newPiece);
     }
   }, [currentPiece, isCollision]);
 
   const moveDown = React.useCallback((): boolean => {
     const { y } = currentPiece;
+    const newPiece = { ...currentPiece, y: y + 1 };
 
-    if (!isCollision({ ...currentPiece, y: y + 1 })) {
-      setCurrentPiece({
-        ...currentPiece,
-        y: y + 1,
-      });
+    if (!isCollision(newPiece)) {
+      setCurrentPiece(newPiece);
       return true;
     }
 
@@ -112,12 +115,10 @@ export const Game = () => {
 
   const rotate = React.useCallback(() => {
     const { rotation } = currentPiece;
+    const newPiece = { ...currentPiece, rotation: (rotation + 1) % 4 };
 
-    if (!isCollision({ ...currentPiece, rotation: (rotation + 1) % 4 })) {
-      setCurrentPiece({
-        ...currentPiece,
-        rotation: (currentPiece.rotation + 1) % 4,
-      });
+    if (!isCollision(newPiece)) {
+      setCurrentPiece(newPiece);
     }
   }, [currentPiece, isCollision]);
 
@@ -151,6 +152,8 @@ export const Game = () => {
     if (lines.length > 0) {
       setIsClearing(true);
       setCurrentLines(lines);
+      setClearFlashCount(6);
+      setTimerDelay(80);
       return true;
     }
 
@@ -169,17 +172,17 @@ export const Game = () => {
         }
       }
 
-      setLines(lines + currentLines.length);
+      setLines((prevLines) => prevLines + currentLines.length);
       if (currentLines.length === 4) {
-        setScore(score + 800);
+        setScore((prevScore) => prevScore + 800);
       } else {
-        setScore(score + currentLines.length * 100);
+        setScore((prevScore) => prevScore + currentLines.length * 100);
       }
       setCurrentField(field);
       setCurrentLines([]);
       setIsClearing(false);
     }
-  }, [currentLines, currentField, lines, score]);
+  }, [currentLines, currentField]);
 
   const nextPiece = () => {
     const newPiece: PieceProps = {
@@ -191,8 +194,9 @@ export const Game = () => {
     setCurrentPiece(newPiece);
     setNext(getRandomPiece());
     if (isCollision({ ...newPiece })) {
-      setGameOver(true);
-      setIsStarted(false);
+      setIsGameOver(true);
+      setGameOverLine(1);
+      setTimerDelay(50);
     }
   };
 
@@ -202,8 +206,27 @@ export const Game = () => {
     }
 
     if (isClearing) {
-      removeLines();
-      nextPiece();
+      if (clearFlashCount > 0) {
+        setClearFlashCount((prevCount) => prevCount - 1);
+      } else {
+        removeLines();
+        nextPiece();
+        setTimerDelay(GameSpeed);
+      }
+      return;
+    }
+
+    if (isGameOver) {
+      if (gameOverLine > FieldHeightBlocks) {
+        setIsTimerRunning(false);
+        return;
+      }
+      const field = currentField.map((f) => f.slice());
+      for (let i = 1; i <= FieldWidthBlocks; i++) {
+        field[gameOverLine][i] = 1;
+      }
+      setCurrentField(field);
+      setGameOverLine((prevLine) => prevLine + 1);
       return;
     }
 
@@ -217,10 +240,10 @@ export const Game = () => {
     }
   };
 
-  useInterval(tick, 500);
+  useInterval(tick, isTimerRunning ? timerDelay : undefined);
 
   const startGame = React.useCallback(() => {
-    if (isStarted) {
+    if (isStarted && !isGameOver) {
       return;
     }
 
@@ -237,8 +260,11 @@ export const Game = () => {
     });
     setNext(getRandomPiece());
     setIsClearing(false);
+    setIsGameOver(false);
     setIsStarted(true);
-  }, [isStarted]);
+    setTimerDelay(GameSpeed);
+    setIsTimerRunning(true);
+  }, [isGameOver, isStarted]);
 
   const keyHandler = React.useCallback(
     (event: KeyboardEvent) => {
@@ -250,7 +276,7 @@ export const Game = () => {
         return;
       }
 
-      if (!isStarted || isClearing) {
+      if (!isStarted || isClearing || isGameOver) {
         return;
       }
 
@@ -264,7 +290,16 @@ export const Game = () => {
         rotate();
       }
     },
-    [isStarted, isClearing, startGame, moveDown, moveLeft, moveRight, rotate]
+    [
+      isStarted,
+      isClearing,
+      isGameOver,
+      startGame,
+      moveDown,
+      moveLeft,
+      moveRight,
+      rotate,
+    ]
   );
 
   React.useEffect(() => {
@@ -288,14 +323,22 @@ export const Game = () => {
             .map((s) => s.slice(1, FieldWidthBlocks + 1))
             .map((s, i) =>
               s.map((t, j) =>
-                t > 0 ? <Block x={j} y={i} color={t} key={`${j},${i}`} /> : null
+                t > 0 ? (
+                  <Block
+                    x={j}
+                    y={i}
+                    color={t}
+                    highlight={
+                      isClearing &&
+                      currentLines.includes(i + 1) &&
+                      clearFlashCount % 2 === 0
+                    }
+                    key={`${j},${i}`}
+                  />
+                ) : null
               )
             )}
       </Field>
     </Stage>
   );
 };
-
-function getRandomPiece(): Piece {
-  return Math.floor(Math.random() * Math.floor(7));
-}
