@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Line, Group } from "react-konva";
 import { BlockSize, BlockBevelWidth } from "../constants";
+import { ThemeContext } from "../ThemeContext";
 
 export interface BlockProps {
   x: number;
@@ -10,26 +11,9 @@ export interface BlockProps {
   key?: string;
 }
 
-interface ColorShades {
-  color: string;
-  light: string;
-  medium: string;
-  dark: string;
-}
-
-// https://coolors.co/f94d50-f3722c-f8961e-f9c74f-90be6d-43aa8b-577590
-const ColorPalettes: ColorShades[] = [
-  { color: "#aaaaaa", light: "#cccccc", medium: "#888888", dark: "#666666" }, // Gray!
-  { color: "#F94144", light: "#fcb0b2", medium: "#f7262a", dark: "#760406" }, // Red Salsa
-  { color: "#F3722C", light: "#f8b18b", medium: "#e75a0d", dark: "#873408" }, // Orange Red
-  { color: "#F8961E", light: "#fbc888", medium: "#ed8607", dark: "#8b4e04" }, // Yellow Orange
-  { color: "#F9C74F", light: "#fce5b0", medium: "#f7b926", dark: "#765404" }, // MaizeCrayola
-  { color: "#90BE6D", light: "#c9dfb9", medium: "#7eb356", dark: "#44632c" }, // Pistachio
-  { color: "#43AA8B", light: "#8ad0bb", medium: "#3a9278", dark: "#235848" }, // Zomp
-  { color: "#577590", light: "#b3c3d1", medium: "#4d6880", dark: "#2e3e4d" }, // QueenBlue
-];
-
 export const Block = (props: BlockProps) => {
+  const theme = React.useContext(ThemeContext);
+
   const x = props.x * BlockSize;
   const y = props.y * BlockSize;
 
@@ -60,7 +44,7 @@ export const Block = (props: BlockProps) => {
           ...topLeft,
         ]}
         closed
-        fill={props.highlight ? "#ffffff" : ColorPalettes[props.color].light}
+        fill={props.highlight ? "#ffffff" : theme[props.color].light}
       />
       <Line
         points={[
@@ -71,7 +55,7 @@ export const Block = (props: BlockProps) => {
           ...topLeft,
         ]}
         closed
-        fill={props.highlight ? "#ffffff" : ColorPalettes[props.color].medium}
+        fill={props.highlight ? "#ffffff" : theme[props.color].medium}
       />
       <Line
         points={[
@@ -82,7 +66,7 @@ export const Block = (props: BlockProps) => {
           ...topRight,
         ]}
         closed
-        fill={props.highlight ? "#ffffff" : ColorPalettes[props.color].medium}
+        fill={props.highlight ? "#ffffff" : theme[props.color].medium}
       />
       <Line
         points={[
@@ -93,7 +77,7 @@ export const Block = (props: BlockProps) => {
           ...bottomLeft,
         ]}
         closed
-        fill={props.highlight ? "#ffffff" : ColorPalettes[props.color].dark}
+        fill={props.highlight ? "#ffffff" : theme[props.color].dark}
       />
       <Line
         points={[
@@ -104,7 +88,7 @@ export const Block = (props: BlockProps) => {
           ...topLeftBevel,
         ]}
         closed
-        fill={ColorPalettes[props.color].color}
+        fill={theme[props.color].color}
       />
     </Group>
   );

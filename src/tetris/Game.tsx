@@ -15,6 +15,8 @@ import { Scoreboard } from "./Scoreboard";
 import { Tetromino } from "./pieces";
 import { PieceStates, PieceColors } from "./pieces/types";
 import { useInterval } from "./useInterval";
+import { useKeydown } from "./useKeydown";
+import { ThemeContext } from "./ThemeContext";
 
 function generateEmptyField(): number[][] {
   const field: number[][] = [];
@@ -84,24 +86,36 @@ export const Game = () => {
   );
 
   const moveLeft = React.useCallback(() => {
+    if (!isStarted || isClearing || isGameOver) {
+      return;
+    }
+
     const { x } = currentPiece;
     const newPiece = { ...currentPiece, x: x - 1 };
 
     if (!isCollision(newPiece)) {
       setCurrentPiece(newPiece);
     }
-  }, [currentPiece, isCollision]);
+  }, [currentPiece, isClearing, isCollision, isGameOver, isStarted]);
 
   const moveRight = React.useCallback(() => {
+    if (!isStarted || isClearing || isGameOver) {
+      return;
+    }
+
     const { x } = currentPiece;
     const newPiece = { ...currentPiece, x: x + 1 };
 
     if (!isCollision(newPiece)) {
       setCurrentPiece(newPiece);
     }
-  }, [currentPiece, isCollision]);
+  }, [currentPiece, isClearing, isCollision, isGameOver, isStarted]);
 
   const moveDown = React.useCallback((): boolean => {
+    if (!isStarted || isClearing || isGameOver) {
+      return false;
+    }
+
     const { y } = currentPiece;
     const newPiece = { ...currentPiece, y: y + 1 };
 
@@ -111,16 +125,20 @@ export const Game = () => {
     }
 
     return false;
-  }, [currentPiece, isCollision]);
+  }, [currentPiece, isClearing, isCollision, isGameOver, isStarted]);
 
   const rotate = React.useCallback(() => {
+    if (!isStarted || isClearing || isGameOver) {
+      return;
+    }
+
     const { rotation } = currentPiece;
     const newPiece = { ...currentPiece, rotation: (rotation + 1) % 4 };
 
     if (!isCollision(newPiece)) {
       setCurrentPiece(newPiece);
     }
-  }, [currentPiece, isCollision]);
+  }, [currentPiece, isClearing, isCollision, isGameOver, isStarted]);
 
   const setPieceInField = React.useCallback((): number[][] => {
     const { piece, x, y, rotation } = currentPiece;
@@ -266,79 +284,46 @@ export const Game = () => {
     setIsTimerRunning(true);
   }, [isGameOver, isStarted]);
 
-  const keyHandler = React.useCallback(
-    (event: KeyboardEvent) => {
-      event.preventDefault();
-      const { key } = event;
+  useKeydown(" ", startGame);
+  useKeydown("ArrowDown", moveDown);
+  useKeydown("ArrowLeft", moveLeft);
+  useKeydown("ArrowRight", moveRight);
+  useKeydown("ArrowUp", rotate);
 
-      if (key === " ") {
-        startGame();
-        return;
-      }
-
-      if (!isStarted || isClearing || isGameOver) {
-        return;
-      }
-
-      if (key === "ArrowDown") {
-        moveDown();
-      } else if (key === "ArrowLeft") {
-        moveLeft();
-      } else if (key === "ArrowRight") {
-        moveRight();
-      } else if (key === "ArrowUp") {
-        rotate();
-      }
-    },
-    [
-      isStarted,
-      isClearing,
-      isGameOver,
-      startGame,
-      moveDown,
-      moveLeft,
-      moveRight,
-      rotate,
-    ]
-  );
-
-  React.useEffect(() => {
-    document.addEventListener("keydown", keyHandler, false);
-
-    return () => {
-      document.removeEventListener("keydown", keyHandler, false);
-    };
-  }, [keyHandler]);
+  // react-konva requires bridging the context into the Stage component
+  const themeBridge = React.useContext(ThemeContext);
 
   return (
     <Stage height={StageHeight} width={StageWidth} className="game-stage">
-      <Outline />
-      <Next piece={next} pieceVisible={isStarted} />
-      <Scoreboard score={score} lines={lines} />
-      <Field>
-        {isStarted && currentPiece && <Tetromino {...currentPiece} />}
-        {isStarted &&
-          currentField
-            .slice(1, FieldHeightBlocks + 1)
-            .map((s) => s.slice(1, FieldWidthBlocks + 1))
-            .map((s, i) =>
-              s.map((t, j) =>
-                t > 0 ? (
-                  <Block
-                    x={j}
-                    y={i}
-                    color={t}
-                    highlight={
-                      isClearing &&
-                      currentLines.includes(i + 1) &&
-                      clearFlashCount % 2 === 0
-                    }
-                    key={`${j},${i}`}
-                  />
-                ) : null
-              )
-            )}
-      </Field>
+      <ThemeContext.Provider value={themeBridge}>
+        <Outline />
+        <Next piece={next} pieceVisible={isStarted} />
+        <Scoreboard score={score} lines={lines} />
+        <Field>
+          {isStarted && currentPiece && <Tetromino {...currentPiece} />}
+          {isStarted &&
+            currentField
+              .slice(1, FieldHeightBlocks + 1)
+              .map((s) => s.slice(1, FieldWidthBlocks + 1))
+              .map((s, i) =>
+                s.map((t, j) =>
+                  t > 0 ? (
+                    <Block
+                      x={j}
+                      y={i}
+                      color={t}
+                      highlight={
+                        isClearing &&
+                        currentLines.includes(i + 1) &&
+                        clearFlashCount % 2 === 0
+                      }
+                      key={`${j},${i}`}
+                    />
+                  ) : null
+                )
+              )}
+        </Field>
+      </ThemeContext.Provider>
     </Stage>
   );
 };

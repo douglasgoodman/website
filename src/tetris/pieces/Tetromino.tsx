@@ -14,7 +14,9 @@ export const Tetromino = (props: PieceProps) => {
   for (let i = 0; i < height; i++) {
     for (let j = 0; j < width; j++) {
       if (shape[i][j]) {
-        blocks.push(<Block x={x + j} y={y + i} color={color} />);
+        blocks.push(
+          <Block key={`${x + j},${y + i}`} x={x + j} y={y + i} color={color} />
+        );
       }
     }
   }

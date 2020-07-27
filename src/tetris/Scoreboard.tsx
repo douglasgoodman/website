@@ -2,7 +2,20 @@ import * as React from "react";
 import { Layer, Text } from "react-konva";
 import { ScoreboardOffsetX, ScoreboardOffsetY } from "./constants";
 
+const storageKey = "tetrishighscore";
+
 export const Scoreboard = (props: { score: number; lines: number }) => {
+  const [highScore, setHighScore] = React.useState(() => {
+    return +(window.localStorage.getItem(storageKey) ?? 0);
+  });
+
+  React.useEffect(() => {
+    if (props.score > highScore) {
+      setHighScore(props.score);
+      window.localStorage.setItem(storageKey, highScore.toString());
+    }
+  }, [props.score, highScore]);
+
   return (
     <Layer x={ScoreboardOffsetX} y={ScoreboardOffsetY}>
       <Text fill="#cccccc" fontSize={24} text="Score" x={0} y={0} />
@@ -20,6 +33,14 @@ export const Scoreboard = (props: { score: number; lines: number }) => {
         text={props.lines.toString()}
         x={0}
         y={90}
+      />
+      <Text fill="#cccccc" fontSize={24} text="High Score" x={0} y={120} />
+      <Text
+        fill="#cccccc"
+        fontSize={24}
+        text={highScore.toString()}
+        x={0}
+        y={150}
       />
     </Layer>
   );
