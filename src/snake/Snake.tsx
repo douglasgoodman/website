@@ -1,7 +1,8 @@
 import React from "react";
 import { RouteComponentProps } from "@reach/router";
-import "./Snake.css";
+import { css } from "aphrodite";
 import { SnakeGame } from "./SnakeGame";
+import { styles } from "./styles";
 
 const highScoreKey = "snakehighscore";
 
@@ -62,38 +63,39 @@ export const Snake = (props: RouteComponentProps) => {
 
   const setLastKey = (event: React.KeyboardEvent<HTMLDivElement>) => {
     snakeGame?.setLastKey(event.key);
+    event.preventDefault();
   };
 
   return (
-    <div className="Snake" onKeyUp={setLastKey} tabIndex={-1}>
-      <div className="Snake-grid">
-        <header className="Snake-header">
+    <div className={css(styles.container)} onKeyUp={setLastKey} tabIndex={-1}>
+      <div className={css(styles.grid)}>
+        <header className={css(styles.header)}>
           <h3>Space Snake Game</h3>
         </header>
-        <div className="Snake-main">
+        <div className={css(styles.main)}>
           <canvas
             height={400}
             width={600}
             ref={canvasRef}
-            className="Snake-canvas"
+            className={css(styles.gameCanvas)}
           ></canvas>
         </div>
-        <div className="Snake-info">
+        <div className={css(styles.info)}>
           {isRunning ? (
             <div>
-              <button onClick={togglePause} className="Snake-button">
+              <button onClick={togglePause} className={css(styles.button)}>
                 {isPaused ? "Unpause" : "Pause"}
               </button>
             </div>
           ) : (
             <div>
-              <button onClick={startGame} className="Snake-button">
+              <button onClick={startGame} className={css(styles.button)}>
                 Start
               </button>
             </div>
           )}
           <div>
-            <button onClick={stopGame} className="Snake-button">
+            <button onClick={stopGame} className={css(styles.button)}>
               Stop
             </button>
           </div>
@@ -101,7 +103,7 @@ export const Snake = (props: RouteComponentProps) => {
           <p>Score: {score}</p>
           <p>High Score: {highScore}</p>
         </div>
-        <footer className="Snake-footer">
+        <footer className={css(styles.footer)}>
           <p>Control the space snake to eat the space fruit!</p>
         </footer>
       </div>

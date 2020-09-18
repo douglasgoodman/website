@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
+import "./css/index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Router } from "@reach/router";
@@ -8,6 +8,7 @@ import { About } from "./about";
 import { User } from "./user";
 import { Snake } from "./snake";
 import { Tetris } from "./tetris";
+import { Qbert } from "./qbert";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,6 +17,7 @@ ReactDOM.render(
         <About path="about" />
         <Snake path="snake" />
         <Tetris path="tetris" />
+        <Qbert path="qbert" />
         <User path="user/:userId" />
       </App>
     </Router>

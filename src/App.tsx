@@ -1,32 +1,36 @@
 import * as React from "react";
-import "./App.css";
+import { css } from "aphrodite";
 import { RouteComponentProps, Link } from "@reach/router";
+import { styles } from "./styles";
 
 const App = (props: RouteComponentProps & { children?: React.ReactNode }) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>douglasgoodman.net</h1>
-        <div className="App-navbar">
-          <Link className="App-link" to="/">
+    <div className={css(styles.container)}>
+      <header className={css(styles.header)}>
+        <div className={css(styles.title)}>douglasgoodman.net</div>
+        <div className={css(styles.navbar)}>
+          <Link className={css(styles.link)} to="/">
             Home
           </Link>
-          <Link className="App-link" to="snake">
+          <Link className={css(styles.link)} to="snake">
             Snake
           </Link>
-          <Link className="App-link" to="tetris">
+          <Link className={css(styles.link)} to="tetris">
             Tetris
           </Link>
-          <Link className="App-link" to="about">
+          <Link className={css(styles.link)} to="qbert">
+            Q*bert
+          </Link>
+          <Link className={css(styles.link)} to="about">
             About
           </Link>
-          <Link className="App-link" to="user/doug">
-            Doug
+          <Link className={css(styles.link)} to="user/doug">
+            User page test
           </Link>
         </div>
       </header>
-      <div className="App-content">{props.children}</div>
-      <footer className="App-footer">
+      <div className={css(styles.content)}>{props.children}</div>
+      <footer className={css(styles.footer)}>
         <p>Copyright 2020 Douglas Goodman</p>
       </footer>
     </div>

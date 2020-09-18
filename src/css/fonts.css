@@ -1,0 +1,55 @@
+@font-face {
+  font-family: "DomaineDisplay";
+  src: url(./fonts/DomaineDisplay.woff) format("woff");
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "DomaineDisplay";
+  src: url(./fonts/DomaineDisplayBold.woff) format("woff");
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "DomaineDisplay";
+  src: url(./fonts/DomaineDisplayBoldItalic.woff) format("woff");
+  font-style: italic;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "DomaineDisplay";
+  src: url(./fonts/DomaineDisplayExtraboldItalic.woff) format("woff");
+  font-style: italic;
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: "DomaineDisplay";
+  src: url(./fonts/DomaineDisplayItalic.woff) format("woff");
+  font-style: italic;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "DomaineDisplay";
+  src: url(./fonts/DomaineDisplayMedium.woff) format("woff");
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "DomaineDisplay";
+  src: url(./fonts/DomaineDisplayMediumItalic.woff) format("woff");
+  font-style: italic;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "DomaineDisplay";
+  src: url(./fonts/DomaineDisplaySemibold.woff) format("woff");
+  font-style: normal;
+  font-weight: 600;
+}
