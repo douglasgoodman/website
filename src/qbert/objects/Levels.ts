@@ -31,7 +31,7 @@ export const Levels: Level[] = [
     rightSaucerRows: [0],
     visitedPoints: [25],
     canChangeBack: false,
-    levelCompleteBonus: 1000,
+    levelCompleteBonus: 1250,
   },
   {
     levelNumber: 3,
@@ -42,7 +42,7 @@ export const Levels: Level[] = [
     rightSaucerRows: [0],
     visitedPoints: [25],
     canChangeBack: false,
-    levelCompleteBonus: 1000,
+    levelCompleteBonus: 1500,
   },
   {
     levelNumber: 4,
@@ -53,6 +53,6 @@ export const Levels: Level[] = [
     rightSaucerRows: [0],
     visitedPoints: [25],
     canChangeBack: false,
-    levelCompleteBonus: 1000,
+    levelCompleteBonus: 1750,
   },
 ];

@@ -33,10 +33,6 @@ export const Qbert = (props: RouteComponentProps) => {
     }
   }, [isStarted, game, isGameOver]);
 
-  //const cheat = React.useCallback(() => {
-  //  game?.cheat();
-  //}, [game]);
-
   const moveUpLeft = React.useCallback(() => {
     if (!isStarted) {
       return;
@@ -70,7 +66,6 @@ export const Qbert = (props: RouteComponentProps) => {
   }, [isStarted, game]);
 
   useKeydown(" ", startGame);
-  //useKeydown("c", cheat);
   useKeydownMultiple("ArrowUp", "ArrowLeft", moveUpLeft);
   useKeydownMultiple("ArrowUp", "ArrowRight", moveUpRight);
   useKeydownMultiple("ArrowDown", "ArrowLeft", moveDownLeft);

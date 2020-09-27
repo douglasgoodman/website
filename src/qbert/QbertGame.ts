@@ -135,11 +135,6 @@ export class QbertGame {
     }
   };
 
-  public cheat() {
-    this.canMove = false;
-    setTimeout(this.nextLevel, 500);
-  }
-
   private nextLevel = async () => {
     this.pyramid.flash();
     this.score += this.level.levelCompleteBonus;

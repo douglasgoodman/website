@@ -89,7 +89,11 @@ export class Block {
   public visit(): number {
     if (this.level.canChangeBack) {
     } else {
+      const prevBlockState = this.blockState;
       this.blockState = Math.min(this.blockState + 1, this.maxColor);
+      if (this.blockState > prevBlockState) {
+        return this.level.visitedPoints[prevBlockState];
+      }
     }
     return 0;
   }
