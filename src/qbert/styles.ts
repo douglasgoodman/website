@@ -7,5 +7,14 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    fontFamily: "PixelEmulator",
+  },
+  title: {
+    fontSize: "28px",
+  },
+  gameCanvas: {
+    backgroundColor: "#000000",
+    display: "block",
+    fontFamily: "PixelEmulator",
   },
 });

@@ -14,8 +14,7 @@ import { Next } from "./Next";
 import { Scoreboard } from "./Scoreboard";
 import { Tetromino } from "./pieces";
 import { PieceStates, PieceColors } from "./pieces/types";
-import { useInterval } from "./useInterval";
-import { useKeydown } from "./useKeydown";
+import { useInterval, useKeydown } from "../hooks";
 import { ThemeContext } from "./ThemeContext";
 
 function generateEmptyField(): number[][] {
