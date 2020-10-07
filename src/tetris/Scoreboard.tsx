@@ -4,6 +4,12 @@ import { ScoreboardOffsetX, ScoreboardOffsetY } from "./constants";
 
 const storageKey = "tetrishighscore";
 
+const textProps = {
+  fill: "#cccccc",
+  fontFamily: '"PixelEmulator"',
+  fontSize: 20,
+};
+
 export const Scoreboard = (props: { score: number; lines: number }) => {
   const [highScore, setHighScore] = React.useState(() => {
     return +(window.localStorage.getItem(storageKey) ?? 0);
@@ -18,30 +24,12 @@ export const Scoreboard = (props: { score: number; lines: number }) => {
 
   return (
     <Layer x={ScoreboardOffsetX} y={ScoreboardOffsetY}>
-      <Text fill="#cccccc" fontSize={24} text="Score" x={0} y={0} />
-      <Text
-        fill="#cccccc"
-        fontSize={24}
-        text={props.score.toString()}
-        x={0}
-        y={30}
-      />
-      <Text fill="#cccccc" fontSize={24} text="Lines" x={0} y={60} />
-      <Text
-        fill="#cccccc"
-        fontSize={24}
-        text={props.lines.toString()}
-        x={0}
-        y={90}
-      />
-      <Text fill="#cccccc" fontSize={24} text="High Score" x={0} y={120} />
-      <Text
-        fill="#cccccc"
-        fontSize={24}
-        text={highScore.toString()}
-        x={0}
-        y={150}
-      />
+      <Text {...textProps} text="Score" x={0} y={0} />
+      <Text {...textProps} text={props.score.toString()} x={0} y={30} />
+      <Text {...textProps} text="Lines" x={0} y={60} />
+      <Text {...textProps} text={props.lines.toString()} x={0} y={90} />
+      <Text {...textProps} text="High Score" x={0} y={120} />
+      <Text {...textProps} text={highScore.toString()} x={0} y={150} />
     </Layer>
   );
 };

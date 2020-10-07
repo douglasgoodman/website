@@ -296,8 +296,8 @@ export const Game = () => {
     <Stage height={StageHeight} width={StageWidth} className="game-stage">
       <ThemeContext.Provider value={themeBridge}>
         <Outline />
-        <Next piece={next} pieceVisible={isStarted} />
-        <Scoreboard score={score} lines={lines} />
+        {isStarted && <Next piece={next} pieceVisible={isStarted} />}
+        {isStarted && <Scoreboard score={score} lines={lines} />}
         <Field>
           {isStarted && currentPiece && <Tetromino {...currentPiece} />}
           {isStarted &&

@@ -2,6 +2,7 @@ import { StyleSheet } from "aphrodite";
 
 export const styles = StyleSheet.create({
   container: {
+    fontFamily: "PixelEmulator",
     margin: 50,
     display: "flex",
     flexDirection: "row",
