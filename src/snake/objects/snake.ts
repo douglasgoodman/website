@@ -48,13 +48,11 @@ export class Snake extends SnakeSegment {
   public update(direction: Direction) {
     this.updateSegments();
     this.move(direction);
-    //this.drawSegments();
   }
 
   public animate(time: number, snakeSpeed: number) {
     const delta = Math.min((Date.now() - this.lastMoveTime) / snakeSpeed, 1);
     this.segments.forEach((s) => s.updateAnimationPosition(delta));
-
     this.drawSegments();
   }
 

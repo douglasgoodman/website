@@ -1,5 +1,7 @@
 import { StyleSheet } from "aphrodite";
 
+const borderColor = "white";
+
 export const styles = StyleSheet.create({
   container: {
     margin: "50px",
@@ -13,9 +15,9 @@ export const styles = StyleSheet.create({
   },
 
   grid: {
-    backgroundColor: "#8abe7b",
-    border: "solid 1px #8abe7b",
-    color: "#8abe7b",
+    backgroundColor: borderColor,
+    border: `solid 1px ${borderColor}`,
+    color: borderColor,
     fontFamily: "'Courier New', Courier, monospace",
     display: "grid",
     gridTemplateColumns: "auto auto",
@@ -57,17 +59,17 @@ export const styles = StyleSheet.create({
     minWidth: "200px",
     fontFamily: "'Courier New', Courier, monospace",
     backgroundColor: "transparent",
-    color: "#8abe7b",
+    color: borderColor,
     padding: "10px 20px",
-    border: "solid 1px #8abe7b",
+    border: `solid 1px ${borderColor}`,
     marginBottom: "5px",
     ":hover": {
       color: "tomato",
-      border: "solid 1px tomato",
+      border: "solid 1px red",
     },
     ":active": {
       color: "yellowgreen",
-      border: "solid 1px yellowgreen",
+      border: "solid 1px yellow",
     },
     ":focus": {
       outline: 0,

@@ -3,6 +3,8 @@ import { RouteComponentProps } from "@reach/router";
 import { css } from "aphrodite";
 import { SnakeGame } from "./SnakeGame";
 import { styles } from "./styles";
+import { useKeydown } from "../hooks";
+import { Direction } from "./types/enums";
 
 const highScoreKey = "snakehighscore";
 
@@ -61,13 +63,29 @@ export const Snake = (props: RouteComponentProps) => {
     setIsPaused(!isPaused);
   };
 
-  const setLastKey = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    snakeGame?.setLastKey(event.key);
-    event.preventDefault();
-  };
+  const moveUp = React.useCallback(() => {
+    snakeGame?.move(Direction.Up);
+  }, [snakeGame]);
+
+  const moveDown = React.useCallback(() => {
+    snakeGame?.move(Direction.Down);
+  }, [snakeGame]);
+
+  const moveLeft = React.useCallback(() => {
+    snakeGame?.move(Direction.Left);
+  }, [snakeGame]);
+
+  const moveRight = React.useCallback(() => {
+    snakeGame?.move(Direction.Right);
+  }, [snakeGame]);
+
+  useKeydown("ArrowUp", moveUp);
+  useKeydown("ArrowDown", moveDown);
+  useKeydown("ArrowLeft", moveLeft);
+  useKeydown("ArrowRight", moveRight);
 
   return (
-    <div className={css(styles.container)} onKeyUp={setLastKey} tabIndex={-1}>
+    <div className={css(styles.container)}>
       <div className={css(styles.grid)}>
         <header className={css(styles.header)}>
           <h3>Space Snake Game</h3>

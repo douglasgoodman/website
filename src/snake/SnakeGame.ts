@@ -1,7 +1,7 @@
 import { Canvas } from "./canvas";
 import { Timer } from "./types/timer";
 import { Snake } from "./objects/snake";
-import { Direction, DirectionKey } from "./types/enums";
+import { Direction } from "./types/enums";
 import { Position } from "./types/position";
 import { Fruit } from "./objects/fruit";
 import { Star } from "./objects/star";
@@ -16,6 +16,7 @@ export class SnakeGame {
   private snake: Snake;
   private fruit: Fruit;
   private direction: Direction = Direction.Right;
+  private directionQueue: Direction[] = [];
   private elapsedSeconds: number = 0;
   private isRunning: boolean = false;
   private isPaused: boolean = false;
@@ -43,6 +44,7 @@ export class SnakeGame {
     this.snake = new Snake(this.canvas, this.snakeSize, new Position(200, 200));
     this.fruit = new Fruit(this.canvas, this.snakeSize);
     this.direction = Direction.Right;
+    this.directionQueue = [];
     this.score = 0;
     this.isRunning = true;
     this.isPaused = false;
@@ -94,19 +96,8 @@ export class SnakeGame {
     }
   }
 
-  public setLastKey(key: string) {
-    if (key === DirectionKey.Up) {
-      this.direction = Direction.Up;
-    } else if (key === DirectionKey.Down) {
-      this.direction = Direction.Down;
-    } else if (key === DirectionKey.Left) {
-      this.direction = Direction.Left;
-    } else if (key === DirectionKey.Right) {
-      this.direction = Direction.Right;
-    }
-
-    // force
-    //this.tick(this.elapsedSeconds);
+  public move(direction: Direction) {
+    this.directionQueue.push(direction);
   }
 
   private checkCollisions() {
@@ -125,6 +116,9 @@ export class SnakeGame {
 
   private tick = (elapsed: number) => {
     this.elapsedSeconds = elapsed;
+    if (this.directionQueue.length > 0) {
+      this.direction = this.directionQueue.shift() ?? this.direction;
+    }
     this.snake.update(this.direction);
     this.checkCollisions();
     this.callback();
